@@ -4,7 +4,9 @@
 
 This R script identifies pQTL associations that may be influenced by an epitope effect.
 
-It uses VEP annotations for independent COJO variants and nearby proxy variants to detect moderate- or high-impact consequences in protein-coding genes. Results are produced at both the individual COJO association and regional association levels.
+It uses VEP annotations for independent COJO variants and nearby proxy variants to detect moderate- or high-impact consequences in protein-coding genes. 
+Results are produced at both the level of COJO associations, i.e flagging each independant COJO association as possibly driven by epitope, and at the level of 
+the regional association, i.e if the locus association is possibly driven by epitope (see annotation logic below).
 
 ## Requirements
 
@@ -29,12 +31,6 @@ Default filename:
 mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv
 ```
 
-Update:
-
-```r
-path_lb_cistrans <- "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv"
-```
-
 ### Independent COJO SNP associations
 
 Default filename:
@@ -43,29 +39,6 @@ Default filename:
 16-Dec-24_collected_independent_snps.csv
 ```
 
-Update:
-
-```r
-path_cojo <- "16-Dec-24_collected_independent_snps.csv"
-```
-
-The script currently uses `path_freez` when reading this file. Define the directory:
-
-```r
-path_freez <- "/path/to/cojo/files/"
-```
-
-Alternatively, replace:
-
-```r
-fread(paste0(path_freez, path_cojo))
-```
-
-with:
-
-```r
-fread(path_cojo)
-```
 
 ### VEP annotation files
 
@@ -75,11 +48,6 @@ Default directory:
 /exchange/healthds/pQTL/pQTL_workplace/annotations/VEP/data/unzipped/
 ```
 
-Update:
-
-```r
-path_vep_extract <- "/path/to/extracted/VEP/files/"
-```
 
 The extracted annotation files must be located in:
 
@@ -120,16 +88,6 @@ mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann_epitope_symbol_matching.tsv
 
 Contains regional summaries, including the number and proportion of epitope-positive COJO signals and the variants and genes implicated by VEP.
 
-Output filenames can be updated using:
-
-```r
-path_cojo_epitop <- "cojo_epitope_symbol_matching.tsv"
-
-out_lb_epitop_cojo <- paste0(
-  "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_",
-  "hf_ann_epitope_symbol_matching.tsv"
-)
-```
 
 ## Running the script
 
@@ -137,7 +95,6 @@ out_lb_epitop_cojo <- paste0(
 Rscript annotate_pqtl_epitope.R
 ```
 
-Replace `annotate_pqtl_epitope.R` with the actual script filename.
 
 ## Parallel processing
 
@@ -147,4 +104,4 @@ The script uses 32 parallel workers:
 future::plan(multicore, workers = 32)
 ```
 
-Adjust this value according to the available resources. On Windows, use `multisession` instead of `multicore`.
+Adjust this value according to the available resources. 
