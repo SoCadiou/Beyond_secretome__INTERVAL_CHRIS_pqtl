@@ -1,3 +1,16 @@
+###########################################
+##Annotation of pQTL regional association
+##02 definition of signals possibly driven by epitope effect
+
+#This script annotates regional associations as possibly driven by epitope
+#using VEP annotations of all independendants SNP in each regional association
+#########################################
+
+
+#----------------------------------------#
+#----   0 Preparing datasets   ----
+#----------------------------------------#
+
 
 # libraries
 library(tidyverse)
@@ -6,23 +19,26 @@ library(future) # for parallelization
 library(furrr)  # for parallel 
 
 #----------#
-# inputs (locus breaker or LB results)
-path_freez <- "/exchange/healthds/pQTL/results/META_CHRIS_INTERVAL/Locus_breaker_cojo_frozen_version_1812024/"
-path_lb_cistrans <- "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv"
-path_vep_extract <- "/exchange/healthds/pQTL/pQTL_workplace/annotations/VEP/data/unzipped/"
-path_cojo <- "16-Dec-24_collected_independent_snps.csv"
+## 00 path for inputs and outputs 
+
+path_lb_cistrans <- "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv" #regional associations (supp table 1)
+path_vep_extract <- "/exchange/healthds/pQTL/pQTL_workplace/annotations/VEP/data/unzipped/" # path for zip file of VEP annotation of supp table 2
+path_cojo <- "16-Dec-24_collected_independent_snps.csv" #file listing all independant SNP associations (supp table 2)
 
 # outputs
-path_cojo_epitop <- paste0("/scratch/dariush.ghasemi/projects/pqtl_annotation/cojo_epitope_symbol_matching.tsv")
-out_lb_epitop_cojo <- paste0(path_freez, "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann_epitope_symbol_matching.tsv")
+path_cojo_epitop <- paste0("cojo_epitope_symbol_matching.tsv") #output path for
+out_lb_epitop_cojo <- paste0( "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann_epitope_symbol_matching.tsv") #output path for regional annotations with additional epitope annotation
+
+
 
 #----------#
+## 01 load VEP results
+
 # first extract the files inside the zip, 
 # then take the list of them, and match seq_loci 
 # to read corresponding file
 
-#unzip(path_vep, exdir = path_vep_extract)
-files_annot <- list.files(paste0(path_vep_extract, "snps_ld_in_meta_annot"), full.names = TRUE)
+files_annot <- list.files(paste0(path_vep_extract, "snps_ld_in_meta_annot"), full.names = TRUE) #extract file names
 
 
 files_split <- files_annot %>%
@@ -39,8 +55,8 @@ files_split <- files_annot %>%
 
 
 #----------#
-# read LB file
-lb_cistrans <- data.table::fread(paste0(path_freez, path_lb_cistrans))
+## 02 read regional association and cojo files
+lb_cistrans <- data.table::fread(paste0(path_lb_cistrans))
 cojo <- data.table::fread(paste0(path_freez, path_cojo))
 
 
@@ -50,7 +66,7 @@ cojo_annot <- cojo %>%
   ) %>%
   left_join(
     files_split,
-    join_by(study_id == seqid, locus, SNP == snp)
+    join_by(study_id == seqid, locus, SNP == snp) #join file to add the cis trans annotation to cojo file
   ) %>%
   left_join(
     lb_cistrans %>% mutate(
@@ -62,12 +78,12 @@ cojo_annot <- cojo %>%
     )
 
 
-#----------------------------------------#
-#----    Epitope for seqid and all   ----
-#----------------------------------------#
+#---------------------------------------------------#
+#----   1 Epitope definition for COJO variant   ----
+#---------------------------------------------------#
 
-# Steps to Implement:
-# Append path to annotation file (from Michele F) to COJO results.
+# Steps :
+# Append path to annotation file  to COJO results.
 # Next, loop through each row, read the annotation file.
 # Depending on the conditions below, define these columns:
 #    1. epitope_inclusive: if any COJO or proxy variants has moderate- or 
@@ -235,11 +251,11 @@ data.table::fwrite(
   )
 
 
-#----------------------------------------#
-#----    Epitope for COJO variants   ----
-#----------------------------------------#
+#--------------------------------------------------------#
+#----    2 Epitope wrapper for regional association   ----
+#--------------------------------------------------------#
 
-# prepare combined results for join with LB
+# prepare combined results for join with regional associations
 cojo_annot_epitop_4join <- cojo_annot_epitop %>%
   dplyr::select(
     study_id,
@@ -267,7 +283,7 @@ cojo_annot_epitop_4join <- cojo_annot_epitop %>%
   ungroup()
 
 #----------#
-# Combine results with LB
+# Combine results with regional associations
 lb_epitope_cojo <- lb_cistrans %>%
   dplyr::mutate(locus = str_c(chr, start, end, sep = "_")) %>%
   left_join(
@@ -276,7 +292,7 @@ lb_epitope_cojo <- lb_cistrans %>%
   )
 
 #----------#
-# save LB file with epitope effect for COJO SNPs
+# save annotated regional associations file with epitope effect for COJO SNPs
 data.table::fwrite(
   lb_epitope_cojo,
   file = out_lb_epitop_cojo,
