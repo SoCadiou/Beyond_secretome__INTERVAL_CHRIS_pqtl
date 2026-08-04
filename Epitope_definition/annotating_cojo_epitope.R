@@ -22,7 +22,7 @@ library(furrr)  # for parallel
 ## 00 path for inputs and outputs 
 
 path_lb_cistrans <- "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv" #regional associations (supp table 1)
-path_vep_extract <- "/exchange/healthds/pQTL/pQTL_workplace/annotations/VEP/data/unzipped/" # path for zip file of VEP annotation of supp table 2
+path_vep_extract <- "VEP" # path for zip file of VEP annotation of supp table 2
 path_cojo <- "16-Dec-24_collected_independent_snps.csv" #file listing all independant SNP associations (supp table 2)
 
 # outputs
@@ -57,7 +57,7 @@ files_split <- files_annot %>%
 #----------#
 ## 02 read regional association and cojo files
 lb_cistrans <- data.table::fread(paste0(path_lb_cistrans))
-cojo <- data.table::fread(paste0(path_freez, path_cojo))
+cojo <- data.table::fread(paste0(path_cojo))
 
 
 cojo_annot <- cojo %>%
