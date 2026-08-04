@@ -9,11 +9,11 @@ Detailed descriptions of all methods are available in the Supplementary Methods 
 Scripts are provided for:
 
 * **Epitope annotation of regional and conditional associations**
-  Folder: `Epitope_definition`
+  `Epitope_definition`
 
 * **Colocalization networks in hotspots based on conditional signals and related annotations**
-  Folder: `Coloc_networks`
+   `Coloc_networks`
 
 ## Citation
 
-Preprint: [read to preprint](https://www.medrxiv.org/content/10.64898/2026.07.23.26358667v1.full)
+Preprint: [read the preprint](https://www.medrxiv.org/content/10.64898/2026.07.23.26358667v1.full)

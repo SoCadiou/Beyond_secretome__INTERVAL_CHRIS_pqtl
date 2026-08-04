@@ -1,4 +1,6 @@
-# Coloc_networks overview
+# Coloc_networks 
+
+## Overview
 
 This repository contains all scripts necessary to analyze colocalization results through network analysis. 
 
@@ -13,11 +15,11 @@ Especially, this script extracts:
 2. Perform network analysis, once the summary script has been run and inputs are prepared. 
 The Coloc_networks_top_cond folder contains the scripts to run the network analysis, with a dedicated README.
 
-# Input Files for Script 1
+## Input Files for Script 1
 
 The input paths and filenames must be updated at the beginning of the script.
 
-## Regional pQTL annotation file
+### Regional pQTL annotation file
 
 Default filename:
 
@@ -49,7 +51,7 @@ This file is expected to contain regional pQTL and hotspot annotations, includin
 * `new_somamer`
 * `uniprot_match`
 
-## Colocalization results file
+### Colocalization results file
 
 Default filename:
 

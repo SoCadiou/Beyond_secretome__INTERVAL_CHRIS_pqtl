@@ -6,7 +6,7 @@ This R script identifies pQTL associations that may be influenced by an epitope 
 
 It uses VEP annotations for independent COJO variants and nearby proxy variants to detect moderate- or high-impact consequences in protein-coding genes. 
 Results are produced at both the level of COJO associations, i.e flagging each independant COJO association as possibly driven by epitope, and at the level of 
-the regional association, i.e if the locus association is possibly driven by epitope (see annotation logic below).
+the regional association, i.e if the locus association is possibly driven by epitope (see annotation logic and output below).
 
 ## Requirements
 
@@ -45,7 +45,7 @@ Default filename:
 Default directory:
 
 ```text
-/exchange/healthds/pQTL/pQTL_workplace/annotations/VEP/data/unzipped/
+/VEP/
 ```
 
 
