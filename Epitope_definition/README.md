@@ -86,7 +86,7 @@ Contains epitope annotations for each independent COJO association.
 mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann_epitope_symbol_matching.tsv
 ```
 
-Contains regional summaries, including the number and proportion of epitope-positive COJO signals and the variants and genes implicated by VEP.
+Contains the input regional associations file, with additional epitope annotation, including the number and proportion of epitope-positive COJO signals per regional association and the variants and genes implicated by VEP.
 
 
 ## Running the script
