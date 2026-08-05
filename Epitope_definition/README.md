@@ -49,13 +49,14 @@ Default directory:
 ```
 
 
-The extracted annotation files must be located in:
+The annotation files are by default located in:
 
 ```text
 <path_vep_extract>/snps_ld_in_meta_annot/
 ```
+The extraction of lead SNP, locus and aptamer ID (SeqID) from the VEP name must be adapted depending on the naming convention of VEP files.
 
-Expected VEP columns include:
+Expected VEP columns must include:
 
 * `Consequence`
 * `BIOTYPE`
