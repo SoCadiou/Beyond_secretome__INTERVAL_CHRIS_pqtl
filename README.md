@@ -16,4 +16,4 @@ Scripts are provided for:
 
 ## Citation
 
-Preprint: [read the preprint](https://www.medrxiv.org/content/10.64898/2026.07.23.26358667v1.full)
+Preprint: [Beyond the classical plasma secretome: genetic architecture and disease associations of the expanded human plasma proteome in 13,445 Europeans.](https://www.medrxiv.org/content/10.64898/2026.07.23.26358667v1.full)
