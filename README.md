@@ -76,9 +76,7 @@ https://pgwas-chris-interval.gm.eurac.edu
 
 ## License
 
-Code contained directly in this repository is released under the terms described in the [`LICENSE`](./LICENSE) file. 
-
-The licensing terms for the paper-specific code in this repository are currently under institutional review. See [`LICENSE`](./LICENSE) for the current licensing status.
+Code contained directly in this repository is licensed under the [MIT License](./LICENSE).
 
 External software and workflows linked above remain subject to their respective licences.
 
