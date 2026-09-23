@@ -18,7 +18,7 @@ Each folder contains a description of the analysis, software requirements, and a
 
 ## Software and computational workflows
 
-The analyses reported in the manuscript also used the following publicly available software and computational resources.
+The analyses reported in the manuscript also used the following key publicly available software and computational resources. Additional software used for cohort-specific genotype processing and data preparation is described in the Supplementary Methods.
 
 - **REGENIE v3.3** — genome-wide association analyses  
   https://github.com/rgcgithub/regenie
@@ -56,7 +56,7 @@ Locus definition, GCTA-COJO conditional analyses, fine-mapping and pQTL-pQTL col
 
 These analyses were orchestrated using a Snakemake workflow developed for the pQTL analysis project. The exact workflow version used for the analyses in this manuscript is provided for computational provenance at:
 
-https://github.com/ht-diva/pqtl_conditional/tree/889a015802db374f0b8baa8e64618a9915494746
+https://github.com/ht-diva/pqtl_conditional/commit/889a015802db374f0b8baa8e64618a9915494746
 
 The workflow combines established software and methods including GCTA-COJO and coloc and is provided here as a record of the implementation used in the study rather than as a general-purpose supported software package.
 
@@ -76,7 +76,9 @@ https://pgwas-chris-interval.gm.eurac.edu
 
 ## License
 
-Code contained directly in this repository is released under the terms described in the [`LICENSE`](./LICENSE) file. -> help Mauro
+Code contained directly in this repository is released under the terms described in the [`LICENSE`](./LICENSE) file. 
+
+The licensing terms for the paper-specific code in this repository are currently under institutional review. See [`LICENSE`](./LICENSE) for the current licensing status.
 
 External software and workflows linked above remain subject to their respective licences.
 
