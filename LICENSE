@@ -1,11 +1,21 @@
-# License status
+MIT License
 
-The licensing terms for the paper-specific code in this repository are currently under institutional review.
+Copyright (c) 2026 Fondazione Human Technopole
 
-Until an explicit software licence is approved and added to this repository, no licence is granted for reuse, modification, redistribution, sublicensing, or incorporation of the code into other software beyond permissions that may otherwise apply by law. The repository is publicly accessible to support scientific peer review and transparency.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-If an open-source licence is approved, this file will be replaced with the complete text of that licence before the Nature Research software checklist is returned and/or before publication.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-External software, packages, and workflows referenced or linked from this repository remain subject to their own respective licences.
-
-For questions about reuse before the licensing review is complete, please contact the repository maintainers.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
