@@ -13,20 +13,28 @@
 
 
 # libraries
+
+packages <- c(
+  "tidyverse", "data.table", "future", "furrr","readxl"
+)
+
+install.packages(setdiff(packages, rownames(installed.packages())))
+
 library(tidyverse)
 library(data.table)
+library(readxl)
 library(future) # for parallelization
 library(furrr)  # for parallel 
 
 #----------#
 ## 00 path for inputs and outputs 
 
-path_lb_cistrans <- "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv" #regional associations (supp table 1)
-path_vep_extract <- "VEP" # path for zip file of VEP annotation of supp table 2
-path_cojo <- "16-Dec-24_collected_independent_snps.csv" #file listing all independant SNP associations (supp table 2)
+path_lb_cistrans <-"data/supplementary_table_2.xlsx" #regional associations (supp table 2)
+path_vep_extract <- "data/VEP" # path for zip file of VEP annotation of supp table 3
+path_cojo<-"data/supplementary_table_3.xlsx" #file listing all independant SNP associations (supp table 3)
 
 # outputs
-path_cojo_epitop <- paste0("cojo_epitope_symbol_matching.tsv") #output path for
+path_cojo_epitop <- paste0("cojo_epitope_symbol_matching.tsv") #output path
 out_lb_epitop_cojo <- paste0( "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann_epitope_symbol_matching.tsv") #output path for regional annotations with additional epitope annotation
 
 
@@ -55,10 +63,19 @@ files_split <- files_annot %>%
 
 
 #----------#
-## 02 read regional association and cojo files
-lb_cistrans <- data.table::fread(paste0(path_lb_cistrans))
-cojo <- data.table::fread(paste0(path_cojo))
+## 02 read regional association and cojo files and format
 
+lb_cistrans <- read_excel(paste0(path_lb_cistrans), sheet = "ST2", skip = 1)
+lb_cistrans<- lb_cistrans %>%
+  rename(chr = CHR, phenotype_id = SeqID, symbol = HARMONIZED_GENE_NAME)
+lb_cistrans$start<- sub("^[^_]*_([^_]*)_.*$", "\\1",lb_cistrans$locus_START_END_37)
+lb_cistrans$end  <- sub("^.*_", "", lb_cistrans$locus_START_END_37)
+lb_cistrans$start <- as.character(lb_cistrans$start)
+lb_cistrans$end <- as.character(lb_cistrans$end)
+
+cojo <- read_excel(paste0(path_cojo), sheet = "ST3", skip = 2)
+cojo<- cojo%>%
+  rename( locus = locus_START_END_37, study_id = SeqID, SNP = SNPID)
 
 cojo_annot <- cojo %>%
   dplyr::mutate(
@@ -70,10 +87,11 @@ cojo_annot <- cojo %>%
   ) %>%
   left_join(
     lb_cistrans %>% mutate(
-      locus = str_c(chr, start, end, sep = "_"),
-      Ensemble_noisoform = str_remove_all(Ensembl, "\\.\\d+") # remove isoform number from Ensembl_id
+      locus = stringr::str_remove(locus_START_END_37, "^chr") #,
+      # Ensemble_noisoform = str_remove_all(Ensembl, "\\.\\d+") # remove isoform number from Ensembl_id
       ) %>%
-      dplyr::select(phenotype_id, locus, cis_or_trans, symbol, Ensemble_noisoform),
+      dplyr::select(phenotype_id, locus, symbol#, Ensemble_noisoform
+                    ),
     join_by(study_id == phenotype_id, locus)
     )
 
@@ -239,7 +257,8 @@ results_epitope <- pmap_dfr(
 # Combine results with COJO
 cojo_annot_epitop <- cojo_annot %>%
   inner_join(results_epitope, join_by(txtpath)) %>%
-  dplyr::select(- c(txtpath, symbol, Ensemble_noisoform))
+  dplyr::select(- c(txtpath, symbol #, Ensemble_noisoform
+                    ))
 
 # save COJO file with epitope effect
 data.table::fwrite(
