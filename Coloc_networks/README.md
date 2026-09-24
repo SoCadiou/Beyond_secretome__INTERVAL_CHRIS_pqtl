@@ -18,52 +18,53 @@ The Coloc_networks_top_cond folder contains the scripts to run the network analy
 ## Input Files for Script 1
 
 The input paths and filenames must be updated at the beginning of the script.
+Default inputs are stored within /data/.
 
 ### Regional pQTL annotation file
+
+Default file:
+Supplementary table 2 of corresponding manuscript: regional associations annotated.
 
 Default filename:
 
 ```text
-mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv
+supplementary_table_2.xlsx
 ```
 
 Update this line:
 
 ```r
-mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann <- read_delim(
-  "mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv",
-  delim = ";",
-  escape_double = FALSE,
-  trim_ws = TRUE
-)
+mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann <- read_excel("data/supplementary_table_2.xlsx", sheet = "ST2", skip = 1)
 ```
 
 This file is expected to contain regional pQTL and hotspot annotations, including:
 
-* `chr`
-* `start`
-* `end`
-* `phenotype_id`
+* `CHR`
+* `locus_START_END_37`
+* `SeqID`
 * `cis_or_trans`
 * `UniProt_ID`
 * `hotspot`
 * `full_hotspot_gene_window`
-* `new_somamer`
+* `uniprot_new_in_somascan7k_vs5k`
 * `uniprot_match`
 
 ### Colocalization results file
 
+Default file:
+Mock dataset subset (first 297231 rows) of the colocalization pairs for hotspot from the corresponding manuscript. 
+
 Default filename:
 
 ```text
-14-Apr-25_combined_colocalization_results.csv
+combined_colocalization_results.csv
 ```
 
 Update this line:
 
 ```r
 colocalization_results <- fread(
-  "14-Apr-25_combined_colocalization_results.csv"
+  "data/combined_colocalization_results_mock_dataset.csv"
 )
 ```
 
@@ -84,3 +85,4 @@ This file is expected to contain paired trait and locus information, including:
 * `top_freq_geno_b`
 * `top_mlog10pC_a`
 * `top_mlog10pC_b`
+

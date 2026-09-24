@@ -1,6 +1,5 @@
 #!/bin/bash
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=your.email@fht.org
 #SBATCH --output="logs/%j_Node.log"
 #SBATCH --partition=cpuq
 #SBATCH --mem=10GB
@@ -9,8 +8,9 @@
 #SBATCH --job-name=Coloc_net
 #SBATCH --time=00:30:00
 
-source /center/healthds/singularity_functions
-cd $HOME
+source /exchange/healthds/singularity_functions
+module load R/4.4.0
+cd ../results/
 
 input=$1
 r_script=$2

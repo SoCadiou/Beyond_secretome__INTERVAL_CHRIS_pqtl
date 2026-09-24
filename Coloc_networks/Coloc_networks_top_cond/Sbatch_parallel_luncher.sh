@@ -1,8 +1,7 @@
 #!/bin/bash
 
 JOBS_LIMIT=70
-r_script="Colocalization_in_hotspots_parallel_top_cojo.R"
-
+r_script="../Coloc_networks_top_cond/Colocalization_in_hotspots_parallel_top_cojo.R"
 
 for i in $(seq 1 22); do
   while [ "$(squeue -u $USER |wc -l)" -ge "${JOBS_LIMIT}" ]; do

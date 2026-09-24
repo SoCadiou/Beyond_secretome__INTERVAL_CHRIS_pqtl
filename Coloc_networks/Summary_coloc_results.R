@@ -5,11 +5,10 @@ library(dplyr)
 library(scales)
 library(ggrepel)
 library(data.table)
+library(readxl)
 
-mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann <- read_delim("mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv", 
-                                                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
-
-colocalization_results <- fread("14-Apr-25_combined_colocalization_results.csv")
+mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann <- read_excel("data/supplementary_table_2.xlsx", sheet = "ST2", skip = 1)
+colocalization_results <- fread("data/14-Apr-25_combined_colocalization_results.csv")
 
 dim(colocalization_results)
 
@@ -69,11 +68,16 @@ colocalization_results_filtered <- colocalization_results_filtered %>%
 
 
 colnames(mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann)
-hotspots_df <- mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann[,c("chr", "start","end", "phenotype_id", "cis_or_trans","UniProt_ID", "hotspot", "full_hotspot_gene_window", "new_somamer", "uniprot_match")]
+hotspots_df <- mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann[,c("CHR","locus_START_END_37","SeqID", "cis_or_trans","UniProt_ID", "hotspot", "full_hotspot_gene_window", "uniprot_new_in_somascan7k_vs5k" , "uniprot_match")]
+colnames(hotspots_df)<-c("chr", "locus_START_END_37", "phenotype_id", "cis_or_trans","UniProt_ID", "hotspot", "full_hotspot_gene_window", "new_somamer", "uniprot_match")
+hotspots_df$start<- sub("^[^_]*_([^_]*)_.*$", "\\1",hotspots_df$locus_START_END_37)
+hotspots_df$end  <- sub("^.*_", "", hotspots_df$locus_START_END_37)
 hotspots_df$chr <- as.character(hotspots_df$chr)
 hotspots_df$start <- as.character(hotspots_df$start)
 hotspots_df$end <- as.character(hotspots_df$end)
+hotspots_df <- hotspots_df[,c("chr", "start","end", "phenotype_id", "cis_or_trans","UniProt_ID", "hotspot", "full_hotspot_gene_window", "new_somamer", "uniprot_match")]
 dim_dataset <- dim(colocalization_results_filtered)[2]
+colocalization_results_filtered<-as.data.frame(colocalization_results_filtered)
 
 colocalization_results_filtered <- merge(colocalization_results_filtered, hotspots_df, by.x = c("chr_locus_a", "start_locus_a", "end_locus_a", "trait_a"), by.y = c("chr", "start","end", "phenotype_id"))
 table(colocalization_results_filtered$hotspot)
@@ -121,7 +125,11 @@ cis_df <- colocalization_results_filtered %>%
    filter(cis_or_trans_locus_a == "cis" & cis_or_trans_locus_b == "cis")
  
 cis_df <- cis_df %>%
-  group_by(UniProt_ID_locus_a, symbol_a, Protein.names_a, UniProt_ID_locus_b, symbol_b, Protein.names_b) %>%
+  group_by(UniProt_ID_locus_a, 
+           # symbol_a, Protein.names_a, 
+           UniProt_ID_locus_b #, 
+           # symbol_b, Protein.names_b
+           ) %>%
   filter(UniProt_ID_locus_a != UniProt_ID_locus_b)%>%
   summarise(count = n())
 dim(cis_df)
@@ -144,7 +152,7 @@ for(i in 1:nrow(cis_df)){
   }
 table(cis_df$hotspot_locus_a, cis_df$hotspot_locus_b)
 
-write.csv(cis_df, "Colocalizing_cis.csv")
+write.csv(cis_df, "results/Colocalizing_cis.csv")
 
 colocalization_results_temp <- colocalization_results_filtered %>%
   filter(hotspot_locus_a == TRUE & hotspot_locus_b == TRUE)
@@ -163,7 +171,7 @@ count_df <- colocalization_results_temp %>%
     .groups = "drop"
   )
 
-write.csv(count_df, "Colocalizing_cis_new_somamer.csv")
+write.csv(count_df, "results/Colocalizing_cis_new_somamer.csv")
 
 colocalization_results_temp <- colocalization_results_filtered %>%
   filter(hotspot_locus_a == TRUE & hotspot_locus_b == TRUE)
@@ -182,21 +190,21 @@ count_df <- colocalization_results_temp %>%
     .groups = "drop"
   )
 
-write.csv(count_df, "Colocalizing_cis_new_uniprot.csv")
+write.csv(count_df, "results/Colocalizing_cis_new_uniprot.csv")
 
 #############################################################
 
 colocalization_results_filtered <- colocalization_results_filtered %>%
   filter(hotspot_locus_a == TRUE | hotspot_locus_b == TRUE)
-fwrite(colocalization_results_filtered, "Colocalization_results_filtered.csv", sep=",")
+fwrite(colocalization_results_filtered, "results/Colocalization_results_filtered.csv", sep=",")
 
 
 count_df <- colocalization_results_filtered %>%
   group_by(full_hotspot_gene_window_locus_a, chr_locus_a) %>%
   summarise(colocalization_count = n())%>%
   filter(full_hotspot_gene_window_locus_a != "[]")
-write.csv(count_df, "Hotspots_df.csv")
+write.csv(count_df, "results/Hotspots_df.csv")
 
 LB_in_hotsposts <- mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann %>%
   filter(hotspot == TRUE)
-write.csv(LB_in_hotsposts, "LB_in_hotsposts.csv")
+write.csv(LB_in_hotsposts, "results/LB_in_hotsposts.csv")

@@ -212,7 +212,7 @@ top_n_terms=None
 kegg_path = 'kegg_hierarchy.csv'
 save_table=True
 
-count_df = pd.read_csv("Hotspots_df.csv",index_col="Unnamed: 0")
+count_df = pd.read_csv("/results/Hotspots_df.csv",index_col="Unnamed: 0")
 count_df = count_df.reset_index(drop=True)
 
 
