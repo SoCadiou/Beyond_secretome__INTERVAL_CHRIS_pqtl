@@ -6,6 +6,7 @@
 #using VEP annotations of all independendants SNP in each regional association
 #########################################
 
+time.start <- Sys.time()
 
 #----------------------------------------#
 #----   0 Preparing datasets   ----
@@ -30,7 +31,7 @@ library(furrr)  # for parallel
 ## 00 path for inputs and outputs 
 
 path_lb_cistrans <-"data/supplementary_table_2.xlsx" #regional associations (supp table 2)
-path_vep_extract <- "data/VEP" # path for zip file of VEP annotation of supp table 3
+path_vep_extract <- "data/" # path containing snps_ld_in_meta_annot/ 
 path_cojo<-"data/supplementary_table_3.xlsx" #file listing all independant SNP associations (supp table 3)
 
 # outputs
@@ -199,7 +200,7 @@ find_epitope <- function(symbol, cis_or_trans, txtpath) {
     )
     
     # flag variable to indicate rows with mismatched genes
-    matched_rows <- annot_df[symbol %in% gene_names]
+    matched_rows <- annot_df[SYMBOL %in% gene_names]
     genes_matched  <- ifelse(nrow(matched_rows) > 0, "Yes", "No")
     
   } else {
@@ -255,20 +256,24 @@ results_epitope <- pmap_dfr(
   )
 
 # Combine results with COJO
-cojo_annot_epitop <- cojo_annot %>%
-  inner_join(results_epitope, join_by(txtpath)) %>%
+# results_epitope is generated row-by-row from cojo_annot in the same order.
+# Bind the result columns directly: joining only by txtpath creates a many-to-many
+# Cartesian expansion when multiple COJO rows use the same VEP annotation file.
+cojo_annot_epitop <- dplyr::bind_cols(
+  cojo_annot,
+  results_epitope %>% dplyr::select(-txtpath)
+) %>%
   dplyr::select(- c(txtpath, symbol #, Ensemble_noisoform
-                    ))
 
 # save COJO file with epitope effect
 data.table::fwrite(
-  cojo_annot_epitop, 
-  file = path_cojo_epitop, 
+  cojo_annot_epitop,
+  file = path_cojo_epitop,
   quote = F, 
   row.names = F, 
   sep = "\t"
-  )
-
+  ) 
+  
 
 #--------------------------------------------------------#
 #----    2 Epitope wrapper for regional association   ----
@@ -319,4 +324,7 @@ data.table::fwrite(
   row.names = F,
   sep = "\t"
 )
+
+cat("\nannotating_cojo_epitope.R completed in ", round(as.numeric(difftime(Sys.time(), time.start, units = "secs")), 2), " seconds.\n", sep = "")
+
 
