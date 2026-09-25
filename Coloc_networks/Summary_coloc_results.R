@@ -7,8 +7,11 @@ library(ggrepel)
 library(data.table)
 library(readxl)
 
+dir.create("results", showWarnings = FALSE, recursive = TRUE)
+
 mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann <- read_excel("data/supplementary_table_2.xlsx", sheet = "ST2", skip = 1)
-colocalization_results <- fread("data/14-Apr-25_combined_colocalization_results.csv")
+# colocalization_results <- fread("data/14-Apr-25_combined_colocalization_results.csv")
+colocalization_results <- fread("data/combined_colocalization_results_mock_dataset.csv")
 
 dim(colocalization_results)
 
