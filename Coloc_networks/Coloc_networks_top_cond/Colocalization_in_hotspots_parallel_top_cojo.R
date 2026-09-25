@@ -7,7 +7,7 @@ time.start <- Sys.time()
 
 packages <- c(
   "ggraph", "readr", "dplyr", "ggplot2", "scales",
-  "ggrepel", "Matrix", "tidygraph", "data.table", "readxl"
+  "ggrepel", "Matrix", "tidygraph", "data.table", "readxl", "igraph" # ##### UPDATED #####
 )
 #install.packages("rlang")
 install.packages(setdiff(packages, rownames(installed.packages())))
@@ -48,7 +48,13 @@ cat("Mapping file: ", mapping_path,"\n")
 ###### 1. Upload all the data needed
 #############################################
 args <- commandArgs(trailingOnly = TRUE)
-k = as.numeric(args[[1]])
+if (length(args) == 0) {
+  k <- 1
+  cat("No hotspot index supplied; using k = 1 for local testing.\n")
+} else {
+  k <- as.numeric(args[[1]])
+}
+
 colocalization_results_filtered <- fread(colocalization_results_filtered_path)
 hotspot_df <- read_csv(hotspots_df_path)[,-1]
 LB_in_hotsposts <- read_csv(LB_results_path)[,-1]
@@ -97,7 +103,8 @@ cat("Computation of the adjacency matrix finished \n")
 
 g_est <- graph_from_adjacency_matrix(adj_matrix , mode = "undirected", diag = F,add.colnames = NA, add.rownames = NULL )
 foldname <- paste(chr_hotspot,"_", sel_hotspot, sep ="")
-dir.create(paste("../results/",foldname,sep=""))
+dir.create(paste("../results/",foldname,sep=""), showWarnings = FALSE, recursive = TRUE)
+
 filename <- paste("../results/",foldname, "/Estimated_graph.txt", sep="")
 summary_adj_matrix <- summary(adj_matrix)
 summary_adj_matrix$i_Name <- rownames(adj_matrix)[summary_adj_matrix$i]
