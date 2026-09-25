@@ -1,0 +1,33 @@
+name: beyond_secretome
+
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+
+dependencies:
+  - r-base=4.4
+  - r-readr
+  - r-readxl
+  - r-dplyr
+  - r-igraph
+  - r-ggplot2
+  - r-scales
+  - r-ggrepel
+  - r-matrix
+  - r-ggraph
+  - r-tidygraph
+  - r-data.table
+  - r-tidyverse
+  - r-future
+  - r-furrr
+  - python=3.12
+  - gseapy
+  - pandas
+  - seaborn
+  - matplotlib
+  - scikit-learn
+  - numpy
+
+variables:
+  R_LIBS_USER: "/__beyond_secretome_user_library_disabled__"

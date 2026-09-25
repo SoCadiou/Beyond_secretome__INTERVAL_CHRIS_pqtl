@@ -64,6 +64,58 @@ The workflow combines established software and methods including GCTA-COJO and c
 
 Minimal reproducible examples are provided for the two paper-specific analyses contained in this repository.
 
+### Requirements
+
+The R and Python dependencies required by this project are defined in `environment.yml`. Exact package versions are recorded in `conda-lock.yml` to ensure reproducibility.
+
+Install one of the following:
+
+- [Conda](https://docs.conda.io/)
+- [Miniforge](https://github.com/conda-forge/miniforge) (recommended)
+
+The locked installation also requires `conda-lock` (see below).
+
+### Install the environment
+
+Clone the repository and move into its root directory:
+
+```bash
+git clone https://github.com/SoCadiou/Beyond_secretome__INTERVAL_CHRIS_pqtl.git
+cd Beyond_secretome__INTERVAL_CHRIS_pqtl
+```
+
+(Only once) Install `conda-lock`, if it is not already available:
+
+```bash
+make install-conda-lock
+```
+
+Create the environment using the lockfile:
+
+```bash
+make dependencies-locked
+```
+
+Activate the environment:
+
+```bash
+conda activate beyond_secretome
+```
+
+The analysis scripts can then be run, for example:
+
+```bash
+cd Coloc_networks
+Rscript Summary_coloc_results.R
+```
+
+Or:
+
+```bash
+cd Coloc_networks/Coloc_networks_top_cond
+python enrichment_proteins_community_hotspots.py
+```
+
 ## Data availability and full-scale reproduction
 
 The example datasets provided here are intended to demonstrate the functionality of the paper-specific code.
