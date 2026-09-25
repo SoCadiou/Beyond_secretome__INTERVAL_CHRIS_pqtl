@@ -1,5 +1,7 @@
 rm(list=ls(all=TRUE))
 
+time.start <- Sys.time()
+
 library(readr)
 library(dplyr)
 library(scales)
@@ -10,7 +12,6 @@ library(readxl)
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
 
 mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann <- read_excel("data/supplementary_table_2.xlsx", sheet = "ST2", skip = 1)
-# colocalization_results <- fread("data/14-Apr-25_combined_colocalization_results.csv")
 colocalization_results <- fread("data/combined_colocalization_results_mock_dataset.csv")
 
 dim(colocalization_results)
@@ -88,6 +89,8 @@ colnames(colocalization_results_filtered)[dim_dataset + 1:6] <- c("cis_or_trans_
 dim_dataset <- dim(colocalization_results_filtered)[2]
 colocalization_results_filtered <- merge(colocalization_results_filtered, hotspots_df, by.x = c("chr_locus_b", "start_locus_b", "end_locus_b", "trait_b"), by.y = c("chr", "start","end", "phenotype_id"))
 colnames(colocalization_results_filtered)[dim_dataset + 1:6] <- c("cis_or_trans_locus_b","UniProt_ID_locus_b","hotspot_locus_b","full_hotspot_gene_window_locus_b","new_somamer_b","uniprot_match_b")
+
+dir.create("results", showWarnings = FALSE, recursive = TRUE)
 
 ###########################################
 # SUMMARY OF THE COLOCALIZATION RESULTS
@@ -211,3 +214,6 @@ write.csv(count_df, "results/Hotspots_df.csv")
 LB_in_hotsposts <- mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann %>%
   filter(hotspot == TRUE)
 write.csv(LB_in_hotsposts, "results/LB_in_hotsposts.csv")
+
+cat("\nSummary_coloc_results.R completed in ", round(as.numeric(difftime(Sys.time(), time.start, units = "secs")), 2), " seconds.\n", sep = "")
+
