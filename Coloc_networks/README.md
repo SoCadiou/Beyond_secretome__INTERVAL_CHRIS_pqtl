@@ -86,3 +86,6 @@ This file is expected to contain paired trait and locus information, including:
 * `top_mlog10pC_a`
 * `top_mlog10pC_b`
 
+## Execution
+
+Computing time for demonstration subset is monitored in the script, thus allowing estimation of computing time on user-machine.
