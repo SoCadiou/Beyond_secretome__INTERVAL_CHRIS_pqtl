@@ -22,22 +22,25 @@ library(furrr)
 ## Inputs
 
 The input paths and filenames must be updated at the beginning of the script.
+Demonstration datasets are provided under /data/
 
 ### Regional pQTL associations
 
 Default filename:
 
 ```text
-mapped_LB_gp_ann_va_ann_bl_ann_collapsed_hf_ann.csv
+supplementary_table_2.xlsx
 ```
+Default file is the supplementary table 2 of the corresponding article.
 
 ### Independent COJO SNP associations
 
 Default filename:
 
 ```text
-16-Dec-24_collected_independent_snps.csv
+supplementary_table_3.xlsx
 ```
+Default file is the supplementary table 3 of the corresponding article.
 
 
 ### VEP annotation files
@@ -45,15 +48,10 @@ Default filename:
 Default directory:
 
 ```text
-/VEP/
+/VEP/snps_ld_in_meta_annot/
 ```
+By default, a subset restricted to chromosome 20 of VEP annotations from the current article is provided.
 
-
-The annotation files are by default located in:
-
-```text
-<path_vep_extract>/snps_ld_in_meta_annot/
-```
 The extraction of lead SNP, locus and aptamer ID (SeqID) from the VEP name must be adapted depending on the naming convention of VEP files.
 
 Expected VEP columns must include:
@@ -105,4 +103,7 @@ The script uses 32 parallel workers:
 future::plan(multicore, workers = 32)
 ```
 
-Adjust this value according to the available resources. 
+Adjust this value according to the available resources.
+
+Computing time for demonstration subset (VEP annotation restricted to chromosome 20) is monitored in the script, thus allowing estimation of computing time on user-machine
+
